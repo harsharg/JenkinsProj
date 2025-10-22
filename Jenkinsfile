@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+            label 'docker-agent'
+          }
     
     environment {
         // Define Docker image name to be used for the container

@@ -5,6 +5,10 @@ pipeline {
         // Define Docker image name to be used for the container
         DOCKER_IMAGE = 'alpine:latest'  // Example image, you can replace it with any image you want
     }
+      tools {
+        git 'Default'  // Make sure 'Default' matches the name you configured in Global Tool Configuration
+    }
+
 
     stages {
         stage('Build Docker Image') {

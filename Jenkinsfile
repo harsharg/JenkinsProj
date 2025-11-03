@@ -5,65 +5,41 @@ pipeline {
             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket for DinD
         }
     }
-    
-    environment {
-        // Define Docker image name to be used for the container
-        DOCKER_IMAGE = 'alpine:latest'  // Example image, you can replace it with any image you want
-    }
-      tools {
-        git 'Default'  // Make sure 'Default' matches the name you configured in Global Tool Configuration
-    }
-
-
     stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm  // Checkout the code from the repository
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Pull the Docker image
-                    sh "docker pull ${DOCKER_IMAGE}"
+                    // Build Docker image from Dockerfile in the repo
+                    sh 'docker build -t my-image:${BUILD_ID} .'
                 }
             }
         }
-
         stage('Run Docker Container') {
             steps {
                 script {
-                    // Run the Docker container and execute commands inside it
-                    sh """
-                        docker run --name my-container -d ${DOCKER_IMAGE} /bin/sh -c "echo Hello from Docker Container!"
-                    """
+                    // Run a container from the newly built image
+                    sh 'docker run --rm my-image:${BUILD_ID} /bin/bash -c "echo Hello from Docker container!"'
                 }
             }
         }
-
-        stage('Run Tests in Container') {
+        stage('Push Docker Image to Registry') {
             steps {
                 script {
-                    // Run additional commands, such as tests or scripts, inside the container
-                    sh """
-                        docker exec my-container /bin/sh -c "echo Running Tests..."
-                    """
-                }
-            }
-        }
-
-        stage('Stop and Remove Docker Container') {
-            steps {
-                script {
-                    // Stop and remove the container after use
-                    sh 'docker stop my-container'
-                    sh 'docker rm my-container'
+                    // Assuming Docker login is done via Jenkins credentials or Docker Hub credentials are set
+                    sh 'docker push my-image:${BUILD_ID}'
                 }
             }
         }
     }
-
     post {
         always {
-            // Clean up Docker resources even if the pipeline fails
-            sh 'docker system prune -f'
+            // Cleanup (optional)
+            cleanWs()  // Clean workspace after the job is finished
         }
     }
 }
-
-

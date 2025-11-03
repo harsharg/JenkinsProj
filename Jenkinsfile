@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Path to Docker executable (adjust if necessary for your environment)
-        DOCKER_PATH = 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe'  // Modify based on your Docker installation path
+        DOCKER_PATH = '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"'  // Modify based on your Docker installation path
     }
 
     stages {

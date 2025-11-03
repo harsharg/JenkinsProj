@@ -1,7 +1,10 @@
 pipeline {
     agent {
-            label 'playwright-agent'
-          }
+        docker {
+            image 'docker:20.10.7-dind'  // Docker-in-Docker image (official)
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socket for DinD
+        }
+    }
     
     environment {
         // Define Docker image name to be used for the container

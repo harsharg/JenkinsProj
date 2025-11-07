@@ -54,36 +54,78 @@
 // }
 
 
+// pipeline {
+//     agent any
+
+//     environment {
+//         BRANCH_NAME = 'master'
+//     }
+
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 echo 'Building project...'
+//             }
+//         }
+
+//         stage('Deploy') {
+//             steps {
+//                 script {
+//                     if (env.BRANCH_NAME == 'master') {
+//                         echo 'Deploying to production environment because we are on the master branch.'
+//                     } else {
+//                         echo 'Deploying to a different environment because we are not on master.'
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     post {
+//         always {
+//             echo 'Cleaning up after the pipeline.'
+//         }
+//     }
+// }
+
+
+
 pipeline {
     agent any
-
-    environment {
-        BRANCH_NAME = 'master'
-    }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building project...'
+                echo 'Building the project...'
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Production') {
+            when {
+                branch 'master'  // Only run this stage for the 'master' branch
+            }
             steps {
-                script {
-                    if (env.BRANCH_NAME == 'master') {
-                        echo 'Deploying to production environment because we are on the master branch.'
-                    } else {
-                        echo 'Deploying to a different environment because we are not on master.'
-                    }
-                }
+                echo 'Deploying to production...'
+            }
+        }
+
+        stage('Deploy to Staging') {
+            when {
+                branch 'develop'  // Only run this stage for the 'develop' branch
+            }
+            steps {
+                echo 'Deploying to staging...'
             }
         }
     }
 
     post {
         always {
-            echo 'Cleaning up after the pipeline.'
+            echo 'Cleaning up...'
         }
     }
 }
+
+
+
+

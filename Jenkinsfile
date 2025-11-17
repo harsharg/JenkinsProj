@@ -90,42 +90,60 @@
 
 
 
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 echo 'Building the project...'
+//             }
+//         }
+
+//         stage('Deploy to Production') {
+//             when {
+//                 branch 'master'  // Only run this stage for the 'master' branch
+//             }
+//             steps {
+//                 echo 'Deploying to production...'
+//             }
+//         }
+
+//         stage('Deploy to Staging') {
+//             when {
+//                 branch 'develop'  // Only run this stage for the 'develop' branch
+//             }
+//             steps {
+//                 echo 'Deploying to staging...'
+//             }
+//         }
+//     }
+
+//     post {
+//         always {
+//             echo 'Cleaning up...'
+//         }
+//     }
+// }
+
 pipeline {
     agent any
-
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building the project...'
-            }
-        }
-
-        stage('Deploy to Production') {
-            when {
-                branch 'master'  // Only run this stage for the 'master' branch
-            }
-            steps {
-                echo 'Deploying to production...'
-            }
-        }
-
-        stage('Deploy to Staging') {
-            when {
-                branch 'develop'  // Only run this stage for the 'develop' branch
+        stage('Example ') {
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
             }
             steps {
-                echo 'Deploying to staging...'
+                echo "Hello, ${PERSON}, nice to meet you."
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up...'
         }
     }
 }
-
 
 
 

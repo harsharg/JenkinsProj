@@ -127,8 +127,8 @@
 // }
 
 pipeline {
-    //agent any
-    stages {
+    agent any
+    //stages {
         stage('Example ') {
             input {
                 message "Should we continue?"
@@ -142,7 +142,7 @@ pipeline {
                 echo "Hello, ${PERSON}, nice to meet you."
             }
         }
-    }
+    //}
 }
 
 

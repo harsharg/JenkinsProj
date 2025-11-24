@@ -149,7 +149,7 @@
     agent any
 
     environment {
-        MY_CREDENTIALS = credentials('bc3fef98-d6fe-424a-a507-91f692f51f51') // Referencing the credentials ID
+        MY_CREDENTIALS = credentials('bc3fef98-d6fe-424a-a507-91f692f51F51') // Referencing the credentials ID
     }
 
     stages {

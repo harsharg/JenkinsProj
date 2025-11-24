@@ -126,22 +126,45 @@
 //     }
 // }
 
-pipeline {
+// pipeline {
+//     agent any
+//     //stages {
+//         stage('Example ') {
+//             input {
+//                 message "Should we continue?"
+//                 ok "Yes, we should."
+//                 submitter "alice,bob"
+//                 parameters {
+//                     string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+//                 }
+//             }
+//             steps {
+//                 echo "Hello, ${PERSON}, nice to meet you."
+//             }
+//         }
+
+
+
+ pipeline {
     agent any
-    //stages {
-        stage('Example ') {
-            input {
-                message "Should we continue?"
-                ok "Yes, we should."
-                submitter "alice,bob"
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+
+    environment {
+        MY_CREDENTIALS = credentials('bc3fef98-d6fe-424a-a507-91f692f51f51') // Referencing the credentials ID
+    }
+
+    stages {
+        stage('Example') {
+            steps {
+                script {
+                    // Use the environment variable containing credentials
+                    echo "Username: ${MY_CREDENTIALS_USR}"  // Username is accessed using _USR
+                    echo "Password: ${MY_CREDENTIALS_PSW}" // Password is accessed using _PSW
                 }
             }
-            steps {
-                echo "Hello, ${PERSON}, nice to meet you."
-            }
         }
+    }
+}
+
     //}
 }
 

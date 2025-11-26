@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Stage1') {
       parallel {
-        stage('Stage1') {
+        stage('Stage2') {
           steps {
             waitForBuild(propagate: true, runId: '20')
             warnError(message: 'Catching')

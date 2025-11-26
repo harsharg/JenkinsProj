@@ -10,7 +10,7 @@ pipeline {
                {
                  def name = 'John'
                  echo "Hello, $name"  // Output: Hello, John (interpolated)
-                 echo ' ${Test}'
+                 echo  "${Test}"
                }
             }
         }

@@ -162,8 +162,11 @@ pipeline {
             steps {
                 // Checkout with credentials for Git
                 scm (
-                     git url: 'https://github.com/myorg/repo', 
-                    credentialsId: 'my-git-credentials'
+                     git
+                     {  
+                       url:'https://github.com/myorg/repo', 
+                       credentialsId: 'my-git-credentials'
+                     }
                 )
             }
         }

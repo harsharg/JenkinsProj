@@ -52,44 +52,71 @@
 
 
 
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 script {
+//                     try {
+//                         echo 'Starting build step...'
+//                         // Simulate a build process that might fail
+//                         sh 'exit 1'  // This will fail the build
+//                     } catch (Exception e) {
+//                         echo "Build failed: ${e.getMessage()}"
+//                         currentBuild.result = 'SUCCESS'  // Mark the build as failed
+//                     }
+//                 }
+//             }
+//         }
+//         stage('Test') {
+//             steps {
+//                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+//                     echo 'Running tests...'
+//                     sh 'exit 1'  // Simulate a failure in the test stage
+//                 }
+//             }
+//         }
+//         stage('Deploy') {
+//             steps {
+//                 echo 'Deploying...'
+//             }
+//         }
+//     }
+//     post {
+//         failure {
+//             echo 'The pipeline has failed.'
+//         }
+//         success {
+//             echo 'The pipeline has completed successfully.'
+//         }
+//     }
+// }
+
+
 pipeline {
     agent any
     stages {
         stage('Build') {
             steps {
-                script {
-                    try {
-                        echo 'Starting build step...'
-                        // Simulate a build process that might fail
-                        sh 'exit 1'  // This will fail the build
-                    } catch (Exception e) {
-                        echo "Build failed: ${e.getMessage()}"
-                        currentBuild.result = 'SUCCESS'  // Mark the build as failed
+                echo 'Building the project...'
+            }
+        }
+        stage('Test') {
+            parallel {
+                stage('Test on Linux') {
+                    steps {
+                        echo 'Running tests on Linux'
+                    }
+                }
+                stage('Test on Windows') {
+                    steps {
+                        echo 'Running tests on Windows'
                     }
                 }
             }
         }
-        stage('Test') {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    echo 'Running tests...'
-                    sh 'exit 1'  // Simulate a failure in the test stage
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
-            }
-        }
-    }
-    post {
-        failure {
-            echo 'The pipeline has failed.'
-        }
-        success {
-            echo 'The pipeline has completed successfully.'
-        }
     }
 }
+
 

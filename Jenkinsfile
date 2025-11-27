@@ -94,24 +94,58 @@
 // }
 
 
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 echo 'Building the project...'
+//             }
+//         }
+//         stage('Test') {
+//             parallel {
+//                 stage('Test on Linux') {
+//                     steps {
+//                         echo 'Running tests on Linux'
+//                     }
+//                 }
+//                 stage('Test on Windows') {
+//                     steps {
+//                         echo 'Running tests on Windows'
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+
+
 pipeline {
-    agent any
+    agent none  // Define no global agent; each matrix part has its own agent
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building the project...'
-            }
-        }
         stage('Test') {
-            parallel {
-                stage('Test on Linux') {
-                    steps {
-                        echo 'Running tests on Linux'
+            matrix {
+                axes {
+                    axis {
+                        name 'PLATFORM'
+                        values 'linux', 'mac', 'windows'
+                    }
+                    axis {
+                        name 'BROWSER'
+                        values 'chrome', 'firefox', 'safari'
                     }
                 }
-                stage('Test on Windows') {
-                    steps {
-                        echo 'Running tests on Windows'
+                stages {
+                    stage('Build and Test') {
+                        steps {
+                            script {
+                                echo "Building on ${PLATFORM} with ${BROWSER}..."
+                                // Add actual build/test commands for each combination
+                                sh "echo 'Running tests on ${PLATFORM} using ${BROWSER}'"
+                            }
+                        }
                     }
                 }
             }

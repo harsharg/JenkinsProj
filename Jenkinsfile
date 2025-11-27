@@ -123,7 +123,7 @@
 
 
 pipeline {
-    agent none  // Define no global agent; each matrix part has its own agent
+    agent any  // Define no global agent; each matrix part has its own agent
     stages {
         stage('Test') {
             matrix {

@@ -122,32 +122,49 @@
 
 
 
+// pipeline {
+//     agent any  // Define no global agent; each matrix part has its own agent
+//     stages {
+//         stage('Test') {
+//             matrix {
+//                 axes {
+//                     axis {
+//                         name 'PLATFORM'
+//                         values 'linux', 'mac', 'windows'
+//                     }
+//                     axis {
+//                         name 'BROWSER'
+//                         values 'chrome', 'firefox', 'safari'
+//                     }
+//                 }
+//                 stages {
+//                     stage('Build and Test') {
+//                         steps {
+//                             script {
+//                                 echo "Building on ${PLATFORM} with ${BROWSER}..."
+//                                 // Add actual build/test commands for each combination
+//                                 sh "echo 'Running tests on ${PLATFORM} using ${BROWSER}'"
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+
 pipeline {
-    agent any  // Define no global agent; each matrix part has its own agent
+    agent any
     stages {
-        stage('Test') {
-            matrix {
-                axes {
-                    axis {
-                        name 'PLATFORM'
-                        values 'linux', 'mac', 'windows'
-                    }
-                    axis {
-                        name 'BROWSER'
-                        values 'chrome', 'firefox', 'safari'
-                    }
-                }
-                stages {
-                    stage('Build and Test') {
-                        steps {
-                            script {
-                                echo "Building on ${PLATFORM} with ${BROWSER}..."
-                                // Add actual build/test commands for each combination
-                                sh "echo 'Running tests on ${PLATFORM} using ${BROWSER}'"
-                            }
-                        }
-                    }
-                }
+        stage('Checkout') {
+            steps {
+                // Checkout with credentials for Git
+                scm (
+                     git url: 'https://github.com/myorg/repo', 
+                    credentialsId: 'my-git-credentials'
+                )
             }
         }
     }

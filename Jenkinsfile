@@ -155,22 +155,46 @@
 
 
 
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 // Checkout with credentials for Git
+//                 scm (
+//                      git
+//                      {  
+//                        url:'https://github.com/myorg/repo', 
+//                        credentialsId: 'my-git-credentials'
+//                      }
+//                 )
+//             }
+//         }
+//     }
+// }
+
+
 pipeline {
     agent any
     stages {
         stage('Checkout') {
             steps {
-                // Checkout with credentials for Git
-                scm (
-                     git
-                     {  
-                       url:'https://github.com/myorg/repo', 
-                       credentialsId: 'my-git-credentials'
-                     }
-                )
+                scm {
+                    git(
+                        url: 'https://github.com/myorg/myrepo.git',
+                        credentialsId: 'my-git-credentials',
+                        branch: 'main'
+                    )
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
             }
         }
     }
 }
+
 
 
